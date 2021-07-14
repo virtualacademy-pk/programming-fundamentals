@@ -8,32 +8,21 @@ int main()
     int row = 2;
     int col = 2;
      int a[row][col], b[row][col], mult[row][col];
-     
-    // Storing elements of first matrix.
-    cout << endl << "Enter elements of matrix 1:" << endl;
-    for(int i = 0; i < row; ++i) {
-        for(int j = 0; j < col; ++j)
-        {
-            cout << "Enter element a" << i + 1 << j + 1 << " : ";
-            cin >> a[i][j];
-        }
-    }
-    // Storing elements of second matrix.
-    cout << endl << "Enter elements of matrix 2:" << endl;
-    for(int i = 0; i < row; ++i) {
-        for(int j = 0; j < col; ++j)
-        {
-            cout << "Enter element b" << i + 1 << j + 1 << " : ";
-            cin >> b[i][j];
-        }
-    }
- 
-    for(int i = 0; i < row; ++i)
-        for(int j = 0; j < col; ++j)
-        {
-            mult[i][j]=0;
-        }
-
+     a[0][0] = 1;
+     a[0][1] = 3;
+     a[1][0] = 5;
+     a[1][1] = 7;
+      
+     b[0][0] = 2;
+     b[0][1] = 4;
+     b[1][0] = 6;
+     b[1][1] = 8;
+       
+     mult[0][0] = 0;
+     mult[0][1] = 0;
+     mult[1][0] = 0;
+     mult[1][1] = 0;
+      
     // Multiplying matrix a and b and storing in array mult.
     for(int i = 0; i < row; ++i) {
         for(int j = 0; j < col; ++j) {
