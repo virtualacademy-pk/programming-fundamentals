@@ -4,47 +4,44 @@ using namespace std;
 
 int main()
 {
-    int r, c, a[100][100], b[100][100], sum[100][100], i, j;
-
-    cout << "Enter number of rows (between 1 and 100): ";
-    cin >> r;
-
-    cout << "Enter number of columns (between 1 and 100): ";
-    cin >> c;
-
-    cout << endl << "Enter elements of 1st matrix: " << endl;
-
-    // Storing elements of first matrix entered by user.
-    for(i = 0; i < r; ++i)
-       for(j = 0; j < c; ++j)
-       {
-           cout << "Enter element a" << i + 1 << j + 1 << " : ";
-           cin >> a[i][j];
-       }
-
-    // Storing elements of second matrix entered by user.
-    cout << endl << "Enter elements of 2nd matrix: " << endl;
-    for(i = 0; i < r; ++i)
-       for(j = 0; j < c; ++j)
-       {
-           cout << "Enter element b" << i + 1 << j + 1 << " : ";
-           cin >> b[i][j];
-       }
-
-    // Adding Two matrices
-    for(i = 0; i < r; ++i)
-        for(j = 0; j < c; ++j)
-            sum[i][j] = a[i][j] + b[i][j];
-
-    // Displaying the resultant sum matrix.
-    cout << endl << "Sum of two matrix is: " << endl;
-    for(i = 0; i < r; ++i)
-        for(j = 0; j < c; ++j)
-        {
-            cout << sum[i][j] << "  ";
-            if(j == c - 1)
-                cout << endl;
+    
+    int row = 2;
+    int col = 2;
+     int a[row][col], b[row][col], sum[row][col];
+     a[0][0] = 1;
+     a[0][1] = 3;
+     a[1][0] = 5;
+     a[1][1] = 7;
+      
+     b[0][0] = 2;
+     b[0][1] = 4;
+     b[1][0] = 6;
+     b[1][1] = 8;
+       
+     sum[0][0] = 0;
+     sum[0][1] = 0;
+     sum[1][0] = 0;
+     sum[1][1] = 0;
+      
+    for(int i = 0; i < row; ++i) {
+        for(int j = 0; j < col; ++j) {
+            sum[i][j] = a[i][j] + b[i][j]; {
+                
+            }
         }
+    }
+
+    // Displaying the addition of two matrix.
+    cout << endl << "Output Matrix: " << endl;
+    for(int i = 0; i < row; ++i) {
+    for(int j = 0; j < col; ++j)
+    {
+        cout << " " << sum[i][j];
+        if(j == col-1) {
+            cout << endl;
+        }
+    }
+    }
 
     return 0;
 }
