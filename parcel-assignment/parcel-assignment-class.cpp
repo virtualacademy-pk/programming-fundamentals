@@ -1,9 +1,9 @@
 #include <iostream>
 
 using namespace std;
-class Parcel{
+class Parcel {
 private:
-    int Id;
+    int id;
     string senderName;
     string senderAddress;
     string receiverName;
@@ -13,16 +13,7 @@ private:
     int feePerGram;
     int additionalFeePerGram;
 public:
-    Parcel(){
-        Id = 0;
-        senderName = "";
-        senderAddress = "";
-        receiverName = "";
-        receiverAddress = "";
-        weight = 0;
-        fee = 0;
-        feePerGram = 0;
-    }
+
     void setFeePerGram(int feePerGram){
         this->feePerGram = feePerGram;
     }
@@ -30,10 +21,10 @@ public:
         return this->feePerGram ;
     }
     void setId(int id){
-        Id = id;
+        this->id = id;
     }
     int getId(){
-        return Id;
+        return this->id;
     }
 
     void setSenderName(string sname){
@@ -61,14 +52,14 @@ public:
         receiverAddress = raddress;
     }
     string getReceiverAddress(){
-        return receiverAddress;
+        return this->receiverAddress;
     }
 
-    void setWeight(int w){
-        weight = w;
+    void setWeight(int weight){
+        this->weight = weight;
     }
     int getWeight(){
-        return weight;
+        return this->weight;
     }
 
     void setFee(int f){
@@ -87,30 +78,29 @@ public:
 
     void displayNormalReceipt(){
         int overWeightCharges = 0;
-        string overWeight = "No";
         int totalOverWeight = 0;
         int totalCharges = this->fee;
 
-        if(this->weight>900 ){
+        if(this->weight > 900 ){
 
             totalOverWeight = this->weight - 900 ;
             overWeightCharges =  totalOverWeight * this->feePerGram ;
-            totalCharges =  totalCharges + (this->feePerGram* totalOverWeight );
+            totalCharges =  totalCharges + overWeightCharges;
 
         }
 
 
         cout<<"\n\nShipment Receipt"<<endl;
         cout<<"-------------------------"<<endl;
-        cout<<"Receipt No. : "<<this->Id<<endl;
+        cout<<"Receipt No. : "<<this->id<<endl;
         cout<<"Sender Name : "<<this->senderName<<endl;
         cout<<"Sender Address : "<<this->senderAddress<<endl;
         cout<<"Receiver Name : "<<this->receiverName<<endl;
         cout<<"Receiver Address : "<<this->receiverAddress<<endl;
         cout<<"Parcel Weight : "<<this->weight<<endl;
-        if(totalOverWeight>0){
+        if(totalOverWeight>0) {
             cout<<"OverWeight : "<<totalOverWeight<<"g"<<endl;
-        }else{
+        } else {
             cout<<"OverWeight : No"<<endl;
         }
 
@@ -128,20 +118,20 @@ public:
         basicCharges =  (basicCharges + (basicCharges * 0.5));
         totalCharges =  basicCharges ;
         int appliedRate = 0;
-        if(this->weight>900 ){
+        if(this->weight > 900 ){
 
             totalOverWeight = this->weight - 900 ;
 
             appliedRate =  (this->feePerGram  + this->additionalFeePerGram);
             overWeightCharges =  totalOverWeight * appliedRate;
-            totalCharges =  (basicCharges + ( appliedRate * totalOverWeight ));
+            totalCharges =  basicCharges + overWeightCharges;
         }
 
 
 
         cout<<"\n\nShipment Receipt"<<endl;
         cout<<"-------------------------"<<endl;
-        cout<<"Receipt No. : "<<this->Id<<endl;
+        cout<<"Receipt No. : "<<this->id<<endl;
         cout<<"Sender Name : "<<this->senderName<<endl;
         cout<<"Sender Address : "<<this->senderAddress<<endl;
         cout<<"Receiver Name : "<<this->receiverName<<endl;
@@ -166,13 +156,13 @@ main() {
     int receiptnum, weight, charges,serviceType,overFee;
     string sname, saddress, rname, raddress;
 
-    while(1){
+    while(1) {
         cout<<"Enter 1 for normal and 2 for urgent service.";
         cin>>serviceType;
         cout<<"Selected Type of Serice  : "<<serviceType<<endl;
         if(serviceType == 1 || serviceType == 2){
             break;
-        }else{
+        } else {
             cout<<"Selected Type Of Service is Incorrect"<<endl;
         }
 
