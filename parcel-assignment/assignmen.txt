@@ -1,0 +1,39 @@
+Case Study
+Develop an application in C++ that should allow the user of application to enter the receipt number,
+sender name, sender address, receiver name, receiver address, parcel weight,
+ shipment basic charges, fee per gram and additional fee per gram of parcel (in case of urgent).
+ Default weight limit without extra charges is 900 grams.
+ After getting required information generate a shipment receipt and display on console screen.
+
+The formula to calculate total charges will be:
+Scenario 1
+===============
+Total-charges = Basic Charges
+    For example if basic charges = 500 and per gram overweight = 2
+    Total Weight: 850
+    Total Charges = 300
+    However, if weight is greater than 900g, then:
+    Total charges = Basic Charges + (Per-gram charges for overweight * overweight)
+    Note: overweight = Total weight – 900.
+    For example if basic charges = 500 and per gram overweight = 2
+    Total Weight: 950
+    overweight: 950 -900 = 30
+    Total Charges = 300 + ( 2 * 30) = 360
+Scenario 2
+============
+Urgent parcel has two specialized attributes i.e.
+ Per-gram charges for overweight (this value will be entered by user)
+ and Urgent service charges per gram for overweight (this value will be entered by user)
+   The formula to calculate total charges will be:
+        Total charges =  (Basic Charges + (50% of basic charges for urgent service))
+        For example if basic charges = 300 and per gram overweight = 2
+            Total Weight: 870
+            Total Charges = 300 +  150 = 750
+    However, if weight is greater than 900g, then:
+    Total charges =  (Basic Charges + (50% of basic charges for urgent service)) +
+     ((Per-gram charges for overweight + Urgent service charges per gram)* overweight)
+     For example if basic charges = 300 and per gram overweight = 2 , urgent service per extra gram 3
+                 Total Weight: 940
+                 Overweight = 940 -900 = 40
+                 Total Charges = (300 +  150)  +  ((2 + 3 ) * 40)
+                 Total Charges = 450 + (5*40) = 450 + 200 = 650
