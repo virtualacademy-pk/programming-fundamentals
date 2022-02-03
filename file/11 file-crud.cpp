@@ -13,18 +13,24 @@ Product readProductFromFile(string line) {
     cstr = new char[line.length() + 1];
 
     strcpy(cstr, line.c_str());
-    product.productId = atoi(strtok(cstr, "|"));
-    product.productName = strtok(NULL, "|");
-    product.price = atoi(strtok(NULL, "|"));
+    product.productId = atoi(strtok(cstr, ","));
+    product.productName = strtok(NULL, ",");
+    product.price = atoi(strtok(NULL, ","));
 
     return product;
 }
 
+void insert(Product product) {
+    fstream fileWriter;
+    fileWriter.open(dataFile, ios::out | ios::app);
+    fileWriter << product.productId << "," << product.productName << ","  << product.price << "\n";
+    fileWriter.close();
+}
 //******************************************************************************
 
 void viewProducts() {
     cout << "Product Id\t Product Name \t Price"<<endl;
-   Product product;
+    Product product;
     ifstream fileReader;
     fileReader.open(dataFile);
     while (!fileReader.eof()) {
@@ -40,9 +46,9 @@ void viewProducts() {
 
 //*****************************************************************************
 Product searchProduct(int productId) {
-     Product product;
-     Product searched;
-     searched.productId = 0;
+    Product product;
+    Product searched;
+    searched.productId = 0;
 
     ifstream fileReader;
     fileReader.open(dataFile);
@@ -80,9 +86,9 @@ int deleteProduct(int productId) {
         if (line.length() > 0) {
             product = readProductFromFile(line);
             if (product.productId != productId) {
-                tempFile << product.productId << "|" << product.productName << "|" << product.price  << "\n";
+                tempFile << product.productId << "," << product.productName << "," << product.price  << "\n";
             } else {
-             deleted = 1;
+                deleted = 1;
             }
         }
 
@@ -99,8 +105,7 @@ int deleteProduct(int productId) {
 }
 
 //------------------
-int updateProduct(int productId, Product updatedProduct) {
-    int updated = 0;
+void updateProduct(int productId, Product updatedProduct) {
     Product product;
     fstream readFile, tempFile;
     tempFile.open("Temp.txt", ios::out);//write
@@ -112,9 +117,9 @@ int updateProduct(int productId, Product updatedProduct) {
         if (line.length() > 0) {
             product = readProductFromFile(line);
             if (product.productId == productId) {
-                tempFile << updatedProduct.productId << "|" << updatedProduct.productName << "|" << updatedProduct.price  << "\n";
+                tempFile << updatedProduct.productId << "," << updatedProduct.productName << "," << updatedProduct.price  << "\n";
             } else {
-                tempFile << product.productId << "|" << product.productName << "|" << product.price  << "\n";
+                tempFile << product.productId << "," << product.productName << "," << product.price  << "\n";
             }
         }
 
@@ -124,7 +129,7 @@ int updateProduct(int productId, Product updatedProduct) {
     readFile.close();
     remove(dataFile.data());
     rename("Temp.txt", dataFile.data());
- return updated;
+
 }
 
 //*****************************************************************************
@@ -152,11 +157,7 @@ int main() {
             while (choice == 1) {
                 Product product;
                 cin >> product;
-                fstream fileWriter;
-                fileWriter.open(dataFile, ios::out | ios::app);
-                fileWriter << product.productId << "|" << product.productName << "|"  << product.price << "\n";
-                fileWriter.close();
-               // insert(product);
+                insert(product);
                 cout << "\t\t\t************************" << endl;
                 cout << "\t\t\t1 More Products" << endl;
                 cout << "\t\t\t0 Exit" << endl;
