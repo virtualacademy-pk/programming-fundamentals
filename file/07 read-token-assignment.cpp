@@ -9,23 +9,23 @@ int main()
 
     ifstream is;
     string line;
-    char *tokenPtr;
-    int totalSalary = 0;
+    string name, marks, grade;
     is.open("data.txt");
 
     while (!is.eof())
     {
-         getline (is, line );
+        getline (is, line );
         char *cstr = new char[line.length() + 1];
         strcpy(cstr, line.c_str());
         strtok(cstr, ":");
-        tokenPtr = strtok(NULL, ":");
+        name = cstr;
+        marks = strtok(NULL, ":");
+        grade = strtok(NULL, ":");
+        cout << name << "\t" << marks << "\t" << grade<<endl;
 
-
-        totalSalary += atoi(tokenPtr);
 
     }
-    cout <<"Total Salary: " << totalSalary;
+
     is.close();
     return 1;
 }  
