@@ -1,0 +1,6 @@
+d:\OOP\CS\Encapsulation\Encapsulation\bin\Debug\Encapsulation.exe.config
+d:\OOP\CS\Encapsulation\Encapsulation\bin\Debug\Encapsulation.exe
+d:\OOP\CS\Encapsulation\Encapsulation\bin\Debug\Encapsulation.pdb
+d:\OOP\CS\Encapsulation\Encapsulation\obj\Debug\Encapsulation.csprojResolveAssemblyReference.cache
+d:\OOP\CS\Encapsulation\Encapsulation\obj\Debug\Encapsulation.exe
+d:\OOP\CS\Encapsulation\Encapsulation\obj\Debug\Encapsulation.pdb

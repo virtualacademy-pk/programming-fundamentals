@@ -1,0 +1,9 @@
+C:\Users\Networks\documents\visual studio 2015\Projects\OOP\Aggregation\bin\Debug\Aggregation.exe.config
+C:\Users\Networks\documents\visual studio 2015\Projects\OOP\Aggregation\bin\Debug\Aggregation.exe
+C:\Users\Networks\documents\visual studio 2015\Projects\OOP\Aggregation\bin\Debug\Aggregation.pdb
+C:\Users\Networks\documents\visual studio 2015\Projects\OOP\Aggregation\obj\Debug\Aggregation.exe
+C:\Users\Networks\documents\visual studio 2015\Projects\OOP\Aggregation\obj\Debug\Aggregation.pdb
+C:\Users\Networks\Documents\Visual Studio 2015\Projects\OOP\Aggregation\obj\Debug\Aggregation.csprojResolveAssemblyReference.cache
+D:\OOP\CS\OOP\Aggregation\bin\Debug\Aggregation.exe.config
+D:\OOP\CS\OOP\Aggregation\obj\Debug\Aggregation.exe
+D:\OOP\CS\OOP\Aggregation\obj\Debug\Aggregation.pdb
