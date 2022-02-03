@@ -2,14 +2,11 @@
 #include <fstream>
 using namespace std;
 int main () {
-    string str;
+    string srg;
     ifstream filestream("testout.txt");
     if (filestream.is_open())
     {
-         filestream >> str;
-         cout<< srg;
-        filestream >> str;
-        cout<< str;
+         cout << "File exist";
         filestream.close();
     }
     else {

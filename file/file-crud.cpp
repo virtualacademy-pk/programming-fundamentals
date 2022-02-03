@@ -4,67 +4,126 @@
 #include<fstream>
 #include "product.cpp"
 using namespace std;
+static string dataFile = "crud.txt";
 
-static Product data[1000];
-static int CURRENT = 0;
 
-void insert(Product product) {
-    data[CURRENT++] = product;
+Product readProductFromFile(string line) {
+    Product product;
+    char *cstr ;
+    cstr = new char[line.length() + 1];
+
+    strcpy(cstr, line.c_str());
+    product.productId = atoi(strtok(cstr, "|"));
+    product.productName = strtok(NULL, "|");
+    product.price = atoi(strtok(NULL, "|"));
+
+    return product;
 }
 
 //******************************************************************************
 
 void viewProducts() {
     cout << "Product Id\t Product Name \t Price"<<endl;
-    for ( int i = 0 ; i < CURRENT; i++) {
-        cout << data[i].productId <<"\t\t\t" << data[i].productName <<"\t\t\t" << data[i].price <<endl;
-
+   Product product;
+    ifstream fileReader;
+    fileReader.open(dataFile);
+    while (!fileReader.eof()) {
+        string line;
+        getline (fileReader, line );
+        if (line.length() > 0) {
+            product = readProductFromFile(line);
+            cout << product.productId <<"\t\t\t" << product.productName <<"\t\t\t" << product.price <<endl;
+        }
     }
+    fileReader.close();
 }
 
 //*****************************************************************************
 Product searchProduct(int productId) {
-    Product search;
-    for ( int i = 0 ; i < CURRENT; i++) {
-        if (data[i].productId == productId) {
-            search = data[i];
-            break;
+     Product product;
+     Product searched;
+     searched.productId = 0;
+
+    ifstream fileReader;
+    fileReader.open(dataFile);
+    while (!fileReader.eof()) {
+        string line;
+        getline (fileReader, line );
+        if (line.length() > 0) {
+            product = readProductFromFile(line);
+            if (product.productId == productId) {
+                searched = product;
+                break;
+            }
+
         }
     }
-    return search;
+    fileReader.close();
+    return searched;
 }
 
 //******************************************************************************
 int flag = 0;
 
-void deleteProduct(int productId) {
+int deleteProduct(int productId) {
 
-        int pos;
-        for ( int i = 0 ; i < CURRENT; i++) {
-            if (data[i].productId == productId) {
-                pos = i;
-                break;
+    int updated = 0;
+    Product product;
+    int deleted = 0;
+    fstream readFile, tempFile;
+    tempFile.open("Temp.txt", ios::out);//write
+    readFile.open(dataFile, ios::in);//read
+    while (!readFile.eof()) {
+        string line;
+        getline (readFile, line );
+
+        if (line.length() > 0) {
+            product = readProductFromFile(line);
+            if (product.productId != productId) {
+                tempFile << product.productId << "|" << product.productName << "|" << product.price  << "\n";
+            } else {
+             deleted = 1;
             }
         }
-        for ( int i = pos ; i < CURRENT; i++) {
-            data[i] = data[i + 1];
-        }
-        CURRENT -= 1;
+
+    }
+
+    tempFile.close();
+    readFile.close();
+    remove(dataFile.data());
+    rename("Temp.txt", dataFile.data());
+    return deleted;
 
 
 
 }
 
 //------------------
-int updateProduct(int productId, Product product) {
+int updateProduct(int productId, Product updatedProduct) {
     int updated = 0;
-     for ( int i = 0 ; i < CURRENT; i++) {
-        if (data[i].productId == productId) {
-           data[i] = product;
-            updated =  1;
-            break;
+    Product product;
+    fstream readFile, tempFile;
+    tempFile.open("Temp.txt", ios::out);//write
+    readFile.open(dataFile, ios::in);//read
+    while (!readFile.eof()) {
+        string line;
+        getline (readFile, line );
+
+        if (line.length() > 0) {
+            product = readProductFromFile(line);
+            if (product.productId == productId) {
+                tempFile << updatedProduct.productId << "|" << updatedProduct.productName << "|" << updatedProduct.price  << "\n";
+            } else {
+                tempFile << product.productId << "|" << product.productName << "|" << product.price  << "\n";
+            }
         }
+
     }
+
+    tempFile.close();
+    readFile.close();
+    remove(dataFile.data());
+    rename("Temp.txt", dataFile.data());
  return updated;
 }
 
@@ -93,7 +152,11 @@ int main() {
             while (choice == 1) {
                 Product product;
                 cin >> product;
-                insert(product);
+                fstream fileWriter;
+                fileWriter.open(dataFile, ios::out | ios::app);
+                fileWriter << product.productId << "|" << product.productName << "|"  << product.price << "\n";
+                fileWriter.close();
+               // insert(product);
                 cout << "\t\t\t************************" << endl;
                 cout << "\t\t\t1 More Products" << endl;
                 cout << "\t\t\t0 Exit" << endl;
@@ -118,10 +181,16 @@ int main() {
                 cout<<"Enter Product Id to delete: ";
                 cin >> productId;
                 cin.ignore();
-                deleteProduct(productId);
+                int deleted = deleteProduct(productId);
+                if (deleted == 1) {
+                    cout <<"Record deleted successfully" << endl;
+                } else {
+
+                    cout <<"No Record found for deletion" << endl;
+                }
                 cout << "\t\t\t************************" << endl;
 
-                cout << "\t\t\t4 Search More Products" << endl;
+                cout << "\t\t\t4 Delete More Products" << endl;
                 cout << "\t\t\t0 Exit" << endl;
                 cout << "\t\t\t10 Main Menu" << endl;
                 cout << "\t\t\t************************" << endl;
@@ -130,10 +199,17 @@ int main() {
             }
             while (choice == 3) {
                 int productId;
-                cout<<"Enter Product Id to serach: ";
+                cout<<"Enter Product Id to Search: ";
                 cin >> productId;
                 Product product = searchProduct(productId);
-                cout << product;
+                cout << "************SEARCH RESULT************" << endl;
+                if (product.productId > 0) {
+                    cout << product;
+                } else {
+                    cout << "No product found" << endl;
+                }
+                cout << "*************************************" << endl;
+
                 cout << "\t\t\t************************" << endl;
 
                 cout << "\t\t\t3 Search More Products" << endl;
@@ -149,9 +225,15 @@ int main() {
                 cin >> productId;
                 Product product = searchProduct(productId);
                 if (product.productId > 0) {
-                    cout <<"You are going to upate following product: " << endl;
+                    cout <<"You are going to UPDATE following product: " << endl;
                     cout << product;
-                    cin >> product;
+                    cout <<"********************************************************" << endl;
+                    cout <<"New Product Name";
+                    cin >>product.productName;
+                    cout << "New Price: ";
+                    cin >> product.price;
+                    cin.ignore();
+
                     updateProduct(productId, product);
                     cout <<"Product Update Successfully...." << endl;
                 }

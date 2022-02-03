@@ -11,7 +11,7 @@ int main()
     string line;
     char *tokenPtr;
     int totalSalary = 0;
-    is.open("json.txt");
+    is.open("data.txt");
 
     while (!is.eof())
     {

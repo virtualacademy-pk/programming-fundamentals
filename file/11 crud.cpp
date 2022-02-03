@@ -7,13 +7,22 @@ using namespace std;
 
 class Inventory {
 public:
-    char productId[5];
-    char productName[10];
-    char amount[5];
-    char price[10];
-    char shelf[5];
+    char *productId;
+    char *productName;
+    char *price;
 };
+Inventory getInventoryItem(string line) {
+    Inventory s;
+    char *cstr ;
+    cstr = new char[line.length() + 1];
 
+    strcpy(cstr, line.c_str());
+    s.productId = strtok(cstr, "|");
+    s.productName = strtok(NULL, "|");
+    s.price = strtok(NULL, "|");
+
+    return s;
+}
 //*****************************************************************************
 void insert() {
     cout << "\t*******************************************************************" << endl;
@@ -25,71 +34,70 @@ void insert() {
 
 
     fstream myfile;
-    myfile.open("test.txt", ios::out | ios::app);
+    myfile.open("crud.txt", ios::out | ios::app);
     cout << endl;
-    cout << "Enter Prouduct ID : ";
+    cout << "Enter Product ID : ";
     cin >> id;
 
     fstream myfile2;
-    myfile2.open("test.txt", ios::in);
+    myfile2.open("crud.txt", ios::in);
     while (!myfile2.eof()) {
-        myfile2.getline(includedId, 4, '|');
-        myfile2.getline(d.productName, 4, '|');
-        myfile2.getline(d.amount, 8, '|');
-        myfile2.getline(d.price, 11, '|');
-        myfile2.getline(d.shelf, 11, '\n');;
-        if (strcmp(id, includedId) == 0) {
-            flag = 1;
+        string line;
+        getline (myfile2, line );
+        if (line.length() > 0) {
+            d = getInventoryItem(line);
 
-            myfile2.close();
-            break;
+            if (strcmp(id, d.productId) == 0) {
+                flag = 1;
+
+                myfile2.close();
+                break;
+            }
         }
-
     }
     if (flag == 1) {
         cout << "******************************************************************" << endl;
         cout << "This id already included by the file change id" << endl;
         cout << "******************************************************************" << endl;
 
-        cout << "Enter Prouduct ID : ";
+        cout << "Enter Product ID : ";
         cin >> id;
         flag = 0;
     }
 
 
-    cout << endl << "Enter Prouduct Name : ";
+    cout << endl << "Enter Product Name : ";
     cin >> d.productName;
-    cout << endl << "Enter Prouduct Ammount : ";
-    cin >> d.amount;
-    cout << endl << "Enter Prouduct Price : ";
+    cout << endl << "Enter Product Ammount : ";
+
     cin >> d.price;
-    cout << endl << "Enter Prouduct Shelf : ";
-    cin >> d.shelf;
-    cout << endl;
-    myfile << id << "|" << d.productName << "|" << d.amount << "|" << d.price << "|" << d.shelf << "\n";
+    cout << endl << "Enter Product Shelf : ";
+
+    myfile << id << "|" << d.productName << "|"  << d.price << "\n";
 
 
     myfile.close();
 }
 
 //******************************************************************************
+
 void view() {
     cout << "\t*******************************************************************" << endl;
     Inventory s;
-    fstream file1;
-    file1.open("test.txt", ios::in);
+    ifstream file1;
+    file1.open("crud.txt");
 
     while (!file1.eof()) {
-        file1.getline(s.productId, 4, '|');
-        file1.getline(s.productName, 4, '|');
-        file1.getline(s.amount, 8, '|');
-        file1.getline(s.price, 11, '|');
-        file1.getline(s.shelf, 11, '\n');;
+        string line;
+        getline (file1, line );
+        if (line.length() > 0) {
+            s = getInventoryItem(line);
 
-
-        cout << "ID:(" << s.productId << ")=Prouduct name:(" << s.productName << ")=Prouduct ammount:(" << s.amount
-             << ")=Prouduct Price:(" << s.price << ")=Prouduct shelf :(" << s.shelf << ")" << endl;
+            cout << "ID:(" << s.productId << ")=Product name:(" << s.productName << ")=Product Price:(" << s.price
+                 << ")" << endl;
+        }
     }
+
     file1.close();
 }
 
@@ -117,28 +125,29 @@ void search() {
 
 
     fstream myfile;
-    myfile.open("test.txt", ios::in);
+    myfile.open("crud.txt", ios::in);
     while (!myfile.eof()) {
-        myfile.getline(s.productId, 4, '|');
-        myfile.getline(s.productName, 4, '|');
-        myfile.getline(s.amount, 4, '|');
-        myfile.getline(s.price, 4, '|');
-        myfile.getline(s.shelf, 4, '\n');
-        if (choise == 1) {
-            if (strcmp(ch, s.productId) == 0) {
-                cout << "Found and his record is " << endl;
-                cout << s.productId << " " << s.productName << " " << s.amount << " " << s.price << " " << s.shelf
-                     << " " << endl;
-                found = 1;
-            }
-        } else if (choise == 2) {
-            if (strcmp(ch, s.productName) == 0) {
-                cout << "Found and his record is " << endl;
-                cout << s.productId << "|" << s.productName << " " << s.amount << " " << s.price << " " << s.shelf
-                     << " " << endl;
-                found = 1;
+        string line;
+        getline (myfile, line );
+        if (line.length() > 0) {
+            s = getInventoryItem(line);
+
+            if (choise == 1) {
+                if (strcmp(ch, s.productId) == 0) {
+                    cout << "Found and his record is " << endl;
+                    cout << s.productId << " " << s.productName  << " " << s.price << " "<< " " << endl;
+                    found = 1;
+                }
+            } else if (choise == 2) {
+                if (strcmp(ch, s.productName) == 0) {
+                    cout << "Found and his record is " << endl;
+                    cout << s.productId << "|" << s.productName << " " << s.price << " " << endl;
+                    found = 1;
+                }
             }
         }
+
+
 
     }
     if (found == 0)
@@ -156,62 +165,42 @@ void del() {
     int u = 0;
 
     char name[20];
-    char id[5];
-    char ee[1];
+    char id[4];
 
-    cout << "\t\t\t****************************" << endl;
-    cout << "\t\t\t* delete by id press--->(1)*" << endl;
-    cout << "\t\t\t* delete by name press->(2)*" << endl;
-    cout << "\t\t\t****************************" << endl;
-    cout << "Enter your choise : ";
-    cin >> way;
-    if (way == 1) {
+
+
+
         cout << "enter product id to delete : ";
         cin >> id;
-    } else if (way == 2) {
-        cout << "enter product name to delete : ";
-        cin >> name;
-    }
+
     Inventory s;
-    fstream myfile;
+    fstream crudReadFile;
     fstream mymyfile;
-    myfile.open("test.txt", ios::in);//read
+    crudRead.open("crud.txt", ios::in);//read
     mymyfile.open("Temp.txt", ios::out);//write
-
+    flag = 0;
     while (!myfile.eof()) {
-        myfile.getline(s.productId, 4, '|');
-        myfile.getline(s.productName, 5, '|');
-        myfile.getline(s.amount, 9, '|');
-        myfile.getline(s.price, 12, '|');
-        myfile.getline(s.shelf, 12, '\n');
+        string line;
+        getline (myfile, line );
 
-        if (way == 1 && strcmp(id, s.productId) != 0 && strcmp(ee, s.productId) != 0) {
-            {
+        if (line.length() > 0) {
+            s = getInventoryItem(line);
+            if ( strcmp(id, s.productId) == 0) {
+                cout << "Below is record " << endl;
+                cout << s.productId << "|" << s.productName << " " << s.price << " " << endl;
 
-                mymyfile << s.productId << "|" << s.productName << "|" << s.amount << "|" << s.price << "|" << s.shelf
-                         << "\n";
+                    flag = 1;
 
-            }
-            if (strcmp(id, s.productId) == 0) {
-                flag = 1;
-            }
-        } else if (way == 2 && strcmp(name, s.productName) != 0 && strcmp(ee, s.productName) != 0) {
-            {
-
-                mymyfile << s.productId << "|" << s.productName << "|" << s.amount << "|" << s.price << "|" << s.shelf
-                         << "\n";
-
-            }
-            if (strcmp(name, s.productName) == 0) {
-                flag = 1;
+            } else {
+                crudRead << s.productId << "|" << s.productName << "|" << s.price << "\n";
             }
         }
 
     }
     myfile.close();
     mymyfile.close();
-    remove("test.txt");
-    rename("Temp.txt", "test.txt");
+    remove("crud.txt");
+    rename("Temp.txt", "crud.txt");
     if (flag == 0) { cout << "Not found" << endl; }
 
 }
@@ -234,40 +223,45 @@ void update() {
     }
     fstream myfile, mymyfile;
     myfile.open("Temp.txt", ios::out);//write
-    mymyfile.open("test.txt", ios::in);//read
+    mymyfile.open("crud.txt", ios::in);//read
     while (!mymyfile.eof()) {
-        mymyfile.getline(s.productId, 4, '|');
+        string line;
+        getline (mymyfile, line );
+
+        if (line.length() > 0) {
+            s = getInventoryItem(line);
+            if (strcmp(id, s.productId) == 0) {
+
+            }
+        }
+        /*mymyfile.getline(s.productId, 4, '|');
         mymyfile.getline(s.productName, 4, '|');
-        mymyfile.getline(s.amount, 8, '|');
         mymyfile.getline(s.price, 11, '|');
-        mymyfile.getline(s.shelf, 11, '\n');
         if (strcmp(comp, s.productName) != 0) {
-            myfile << s.productId << "|" << s.productName << "|" << s.amount << "|" << s.price << "|" << s.shelf
-                   << "\n";
+            myfile << s.productId << "|" << s.productName << "|" << s.price  << "\n";
 
         } else if (strcmp(comp, s.productName) == 0) {
             h++;
             char k;
             if (h > 0) {
                 cout << "is that record you want to update" << endl;
-                cout << s.productId << "|" << s.productName << "|" << s.amount << "|" << s.price << "|" << s.shelf
-                     << "\n";
+                cout << s.productId << "|" << s.productName << "|"  << s.price << "\n";
 
                 cout << " y-n";
                 cin >> k;
             }
             if (k == 'y') {
 
-                myfile << ch << "|" << s.amount << "|" << s.price << "|" << s.shelf << "\n";
+                myfile << ch << "|" << s.price << "\n";
             }
-        }
+        }*/
 
     }
 
     myfile.close();
     mymyfile.close();
-    remove("test.txt");
-    rename("Temp.txt", "test.txt");
+    remove("crud.txt");
+    rename("Temp.txt", "crud.txt");
 
 }
 
@@ -283,12 +277,12 @@ int main() {
 
         while (f == 10) {
             cout << "\t\t\t************************" << endl;
-            cout << "\t\t\t* To Insert press-> (1)*" << endl;
-            cout << "\t\t\t* To view --------> (2)*" << endl;
-            cout << "\t\t\t* To search ------> (3)*" << endl;
-            cout << "\t\t\t* To Delete ------> (4)*" << endl;
-            cout << "\t\t\t* To Update ------> (5)*" << endl;
-            cout << "\t\t\t* To Exit --------> (0)*" << endl;
+            cout << "\t\t\t1 To Insert press" << endl;
+            cout << "\t\t\t2 To view" << endl;
+            cout << "\t\t\t3 To search" << endl;
+            cout << "\t\t\t4 To Delete" << endl;
+            cout << "\t\t\t5 To Update ------> (5)*" << endl;
+            cout << "\t\t\t6 To Exit --------> (0)*" << endl;
             cout << "\t\t\t************************" << endl;
             cout << "Your Choise : ";
             cin >> f;

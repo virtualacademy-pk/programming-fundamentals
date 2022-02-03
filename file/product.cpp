@@ -22,6 +22,7 @@ public:
         getline(input, product.productName);
         cout<<"Enter Price: ";
         input >> product.price;
+        input.ignore();
         return input;
 
     }

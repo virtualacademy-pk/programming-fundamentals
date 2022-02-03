@@ -8,23 +8,15 @@ int main () {
     {
 
         char c;
-     
-        c = '\n';
-        filestream.put(c);
-        c = 'h';
-        filestream.put(c);
-        c = 'e';
-        filestream.put(c);
-        c = 'l';
-        filestream.put(c);
-        c = 'l';
-        filestream.put(c);
-        c = 'o';
-        filestream.put(c);
+        while(c != '\n' ) {
+            c = getchar();
+            filestream.put(c);
+        }
+
         filestream.close();
     }
     else {
         cout << "File opening is fail."<<endl;
     }
     return 0;
-}  
+}
